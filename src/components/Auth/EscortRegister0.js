@@ -47,7 +47,7 @@ function App() {
       inputs.gender         =   store.get("escort").gender;
       inputs.nationality    =   store.get("escort").nationality;
       delete inputs.country ;
-      console.log(inputs);
+      
       Functions.PostAsync("User","setEscort",inputs,context,{name:"callbackContinue",funct:callbackContinue})
     }else {
       let modal = {

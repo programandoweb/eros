@@ -58,7 +58,6 @@ function App() {
       Escort[v[0]]      =   v[1] ;
     })
 
-    //return console.log(inputs);
 
     store.set("escort",Escort);
     /*END PUSH DATA STORE*/
@@ -78,7 +77,6 @@ function App() {
     let _inputs = inputs
         _inputs[e.target.name] =  e.target.value;
     setInputs(_inputs)
-    //console.log(e.target.name,e.target.value);
     store.set("escort",{...escort,[e.target.name]:e.target.value})
 
   }

@@ -60,9 +60,13 @@ function App() {
 
 
     inputs.token  = user.token;
-    if (  inputs.photo_1==='' ||
+    if (  inputs.photo_0==='' ||
+          inputs.photo_1==='' ||
           inputs.photo_2==='' ||
-          inputs.photo_3==='') {
+          inputs.photo_3==='' ||
+          inputs.photo_4==='' ||
+          inputs.photo_5==='' ||
+          inputs.photo_6==='') {
       let modal = {
                 status:true,
                 title:"Error",

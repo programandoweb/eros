@@ -9,7 +9,6 @@ import StateContext from '../../helpers/contextState'
 import Functions from "../../helpers/functions";
 import store from "../../helpers/store";
 
-
 const divBackground = {
   backgroundImage: 'url(' + background + ')',
 };
@@ -17,18 +16,20 @@ const divBackground = {
 let url_continue = false;
 
 function App() {
-  const [genero, setGenero]   =   useState(false)
-  const [inputs, setInputs]   =   useState({
-                                              username:"",
-                                              password:"",
-                                              password2:"",
-                                            });
+  const [insession, setInSession]   =   useState(false)
+  const [genero, setGenero]         =   useState(false)
+  const [inputs, setInputs]         =   useState({
+                                                    username:"",
+                                                    password:"",
+                                                    password2:"",
+                                                  });
 
   const context             =   React.useContext(StateContext);
 
   function handleClick(e){
     e.preventDefault();
-    if (inputs.username!=='' && inputs.password!=='' && inputs.password2!=='') {
+    if ((inputs.username!=='' && inputs.password!=='' && inputs.password2!=='') || (insession && inputs.username!=='')) {
+
       /*PUSH DATA STORE*/
       let Escort           =   store.get("escort");
       Object.entries(inputs).map((v,k)=>{
@@ -40,7 +41,6 @@ function App() {
       store.set("escort",Escort);
       /*END PUSH DATA STORE*/
 
-      
 
       if (inputs.password!==inputs.password2) {
         let modal = {
@@ -104,6 +104,9 @@ function App() {
     let __inputs    = inputs
         __inputs.username =   store.get("user").username
         setInputs(__inputs)
+        if (store.get("user").username!==undefined) {
+          setInSession(true);
+        }
   },[])
 
   return (
@@ -114,14 +117,14 @@ function App() {
             <div className="col-sm-6">
               <div className="row justify-content-center">
                 <div className="row justify-content-center">
-                  <div className="col-6 col-sm-10 text-center">
+                  <div className="col-6 col-sm-7 text-center">
                     <img className="img-fluid" src={logo} alt="ErosApp"/>
                   </div>
                 </div>
               </div>
               <div className="row justify-content-center mt-4">
                 <div className="col-12 col-sm-6 text-center">
-                  <div className="App-Question text-center">Registro inicial</div>
+                  <div className="App-Question text-center">Inicio de Sesión</div>
                 </div>
               </div>
             </div>
@@ -136,22 +139,29 @@ function App() {
                 </div>
                 <input autoComplete="off" defaultValue={inputs.username} onChange={KeyUp} type="text" name="username" className="form-control" placeholder="Nombre de usuario" required/>
               </div>
-              <div className="input-group mb-3">
-                <div className="input-group-prepend">
-                  <span className="input-group-text">
-                    <i className="fas fa-lock"></i>
-                  </span>
+
+              {
+
+                (!insession)?<><div className="input-group mb-3">
+                  <div className="input-group-prepend">
+                    <span className="input-group-text">
+                      <i className="fas fa-lock"></i>
+                    </span>
+                  </div>
+                  <input autoComplete="off" onChange={KeyUp}  onKeyUp={KeyUp} type="text" name="password" className="form-control" placeholder="Contraseña" required/>
                 </div>
-                <input autoComplete="off" onChange={KeyUp}  onKeyUp={KeyUp} type="text" name="password" className="form-control" placeholder="Contraseña" required/>
-              </div>
-              <div className="input-group mb-3">
-                <div className="input-group-prepend">
-                  <span className="input-group-text">
-                    <i className="fas fa-lock"></i>
-                  </span>
-                </div>
-                <input autoComplete="off" onChange={KeyUp}  onKeyUp={KeyUp} type="text" name="password2" className="form-control" placeholder="Confirmar Contraseña" required/>
-              </div>
+                <div className="input-group mb-3">
+                  <div className="input-group-prepend">
+                    <span className="input-group-text">
+                      <i className="fas fa-lock"></i>
+                    </span>
+                  </div>
+                  <input autoComplete="off" onChange={KeyUp}  onKeyUp={KeyUp} type="text" name="password2" className="form-control" placeholder="Confirmar Contraseña" required/>
+                </div></>:<div></div>
+              }
+
+
+
             </div>
           </div>
           <div className="row justify-content-md-center mt-2">

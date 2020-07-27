@@ -1,21 +1,17 @@
 import React,{useState,useEffect} from 'react';
 import '../../App.css';
 import background   from '../../assets/images/design/bg-cliente.jpeg';
-
-
 import prepago  from '../../assets/images/resources/icono-prepago.png';
 import escort  from '../../assets/images/resources/icono-escort.png';
 import show_strip  from '../../assets/images/resources/icono-show-striptease.png';
 import amanecida  from '../../assets/images/resources/icono-amanecida.png';
 import videollamada  from '../../assets/images/resources/icono-videochat.png';
-
-
 import Config from "../../helpers/config";
 
 import StateContext from '../../helpers/contextState'
 import Functions from "../../helpers/functions";
 import store from "../../helpers/store";
-import Services from "../../screens/Services";
+import Services from "../../screens/ServicesEscort";
 import ShowStriper from "../../screens/ShowStriper";
 
 import Selector from "../Selector";
@@ -31,8 +27,6 @@ const divBackground = {
 let user    = store.get("user");
 let motel   = store.get("motel");
 
-let url_continue = false;
-
 const  inputsDefault  = {
                           eleccion:{
                             items:["Si","No"],
@@ -43,8 +37,6 @@ const  inputsDefault  = {
 
 
 function App() {
-  //const [inputs, setImputs] = useState(inputsDefault);
-
   const [inputs, setImputs] = useState({
                                           number_account_bank:"",
                                           number_nequi:"",
@@ -56,21 +48,8 @@ function App() {
 
   const context             =   React.useContext(StateContext);
 
-  function callbackContinue(data){
-    let modal = {
-              status:true,
-              title:"¡Registro con éxito!",
-              message:"¡ya puedes usar tu cuenta!",
-              ico:{
-                    contentColor:"modal-ico-bg-green",
-                    ico:'fas fa-check pl-1',
-                  },
-              customButtom:{
-                link:Config.ConfigAppUrl+"Auth/Login",
-              }
-            }
-    context.setState({dialog:modal})
-    //document.location.href=url_continue;
+  function callbackContinue(){
+    document.location.href=Config.ConfigAppUrl+"Auth/HotelRegister15";
   }
 
   function KeyUp(e) {
@@ -87,32 +66,15 @@ function App() {
 
   function handleClick(e){
     e.preventDefault();
-
-    /*PUSH DATA STORE*/
-    let Motel           =   store.get("motel");
-    Object.entries(inputs).map((v,k)=>{
-      if (Motel[v[0]]===undefined ) {
-        Motel[v[0]]   =   "";
-      }
-      Motel[v[0]]     =   v[1] ;
-    })
-    store.set("motel",Motel);
-    /*END PUSH DATA STORE*/
-
-    url_continue=e.target.href;
-    let send  =   store.get("motel");
-        send.user_id=store.get("user").user_id
-    Functions.PostAsync("User","setMotel",send,context,{name:"callbackContinue",funct:callbackContinue})
+    let _inputs       =   inputs
+        _inputs.data  =   JSON.stringify(store.get("escort"))
+        _inputs.token =   user.token
+        inputs.user_id    =   store.get("user").user_id;
+    Functions.PostAsync("User","setEscortRegisterServiciosPrecios",inputs,context,{name:"callbackContinue",funct:callbackContinue})
   }
 
   useEffect(()=>{
     let __inputs    = inputs
-    Object.entries(inputs).map((v,k)=>{
-      if(motel[v[0]]!==undefined) {
-        __inputs[v[0]]  = motel[v[0]];
-      }
-    })
-    setImputs(__inputs)
   },[])
 
   return (
@@ -127,6 +89,7 @@ function App() {
           <div className="row justify-content-center">
             <div className="col-12 col-sm-4 mt-3">
               <Services
+                store="escort"
                 icon={prepago}
                 label="Prepago"
                 name="prepaid"
@@ -151,18 +114,19 @@ function App() {
           <div className="row justify-content-center">
             <div className="col-12 col-sm-4 mt-3">
               <Services
+                store="escort"
                 question={[
                             {
                               title:"Está bien que me recojan.",
-                              name:"question",
+                              name:"question_donde_es_encuentro",
                             },
                             {
                               title:"En punto de encuentro.",
-                              name:"question",
+                              name:"question_donde_es_encuentro",
                             },
                             {
                               title:"Llego al lugar.",
-                              name:"question",
+                              name:"question_donde_es_encuentro",
                             },
                           ]}
                 icon={escort}
@@ -170,24 +134,14 @@ function App() {
                 name="number_identification"
                 placeholder="0.00"
                 htmlLabel="30 Minutos"
-                times={
-                        [
-                          {
-                            title:"30 Minutos",
-                          }
-                          ,
-                          {
-                            title:"1 Hora",
-                          }
-                        ]
-                      }
               />
             </div>
           </div>
 
           <div className="row justify-content-center">
             <div className="col-12 col-sm-4 mt-3">
-              <ShowStriper
+              <Services
+                store="escort"
                 icon={show_strip}
                 label="Show Striptease"
                 name="sowid"
@@ -197,12 +151,12 @@ function App() {
                         [
                           {
                             title:"30 Minutos",
-                            name:"sowid_30_min",
+                            name:"showid_30_min",
                           }
                           ,
                           {
                             title:"1 Hora",
-                            name:"sowid_one_hour",
+                            name:"showid_one_hour",
                           }
                         ]
                       }
@@ -213,6 +167,7 @@ function App() {
           <div className="row justify-content-center">
             <div className="col-12 col-sm-4 mt-3">
               <Services
+                store="escort"
                 icon={amanecida}
                 label="Amanecida"
                 name="amanecidaid"
@@ -232,7 +187,7 @@ function App() {
                           ,
                           {
                             title:"Hasta",
-                            name:"prepaid_hasta",
+                            name:"amanecidaid_hasta",
                           }
                         ]
                       }
@@ -242,6 +197,7 @@ function App() {
           <div className="row justify-content-center">
             <div className="col-12 col-sm-4 mt-3">
               <Services
+                store="escort"
                 icon={videollamada}
                 label="Videollamada"
                 name="videollamadaid"
@@ -265,7 +221,7 @@ function App() {
           </div>
           <div className="row justify-content-md-center mt-3">
             <div className="col-12 col-sm-4 text-centerr">
-              <div onClick={handleClick} className="btn btn-primary btn-block btn-lg text-white text-decoration-none" href={Config.ConfigAppUrl+"Auth/HotelRegister5"} >
+              <div onClick={handleClick} className="btn btn-primary btn-block btn-lg text-white text-decoration-none" href={Config.ConfigAppUrl+"Auth/HotelRegister15"} >
                 Continuar
               </div>
             </div>

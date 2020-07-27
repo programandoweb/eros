@@ -59,7 +59,7 @@ function App() {
       })
       store.set("escort",Escort);
       /*END PUSH DATA STORE*/
-      
+
 
       Functions.PostAsync("User","setEscortRegister",inputs,context,{name:"callbackContinue",funct:callbackContinue})
     }else{
@@ -79,7 +79,7 @@ function App() {
         __inputs[v[0]]  = escort[v[0]];
       }
     })
-    //console.log(__inputs);
+
     setInputs(__inputs)
   },[])
 

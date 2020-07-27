@@ -14,8 +14,8 @@ class App extends React.Component {
 
   componentDidMount() {
     this.setState(this.props);
-    this.setState(store.get("motel"));
-    this.setState({check_number_account_bank:(store.get("motel")[this.props.name]!==undefined && store.get("motel")[this.props.name]!=="")?true:false});
+    this.setState(store.get("escort"));
+    this.setState({check_number_account_bank:(store.get("escort")[this.props.name]!==undefined && store.get("escort")[this.props.name]!=="")?true:false});
   }
 
   componentWillUnmount() {
@@ -36,9 +36,9 @@ class App extends React.Component {
 
   KeyUp=(e)=>{
     this.setState({[e.target.name]:e.target.value})
-    let get = store.get("motel")
+    let get = store.get("escort")
         get[e.target.name]  = e.target.value;
-        store.set("motel",get);
+        store.set("escort",get);
   }
 
   InputQuestion=()=>{

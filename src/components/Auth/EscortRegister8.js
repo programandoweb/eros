@@ -81,7 +81,7 @@ function App() {
       store.set("escort",{...escort,[e.target.name]:e.target.value})
     }
 
-    useEffect(()=>{
+    useEffect(()=>{      
       if (escort.json_hobbies!==undefined && escort.json_hobbies!==null && escort.json_hobbies!=="null" && escort.json_hobbies!=="") {
         let json_hobbies     =   JSON.parse(escort.json_hobbies)
         let __inputs          =   inputs

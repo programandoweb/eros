@@ -77,7 +77,6 @@ function App() {
 
   function handleUpload(e){
     let renameFile  = e.target.attributes['doc'].value;
-    console.log(renameFile); return
     Functions.PostAsync("User","uploadPhoto",{renameFile:renameFile,token:user.token,userfile:e.target.files[0],type:e.target.attributes['doc'].value},context,{name:"callbackChangeImage",funct:callbackChangeImage})
     e.preventDefault();
   }
@@ -222,7 +221,7 @@ function App() {
           </div>
           <div className="row justify-content-md-center mt-1">
             <div className="col-12 col-sm-4 text-centerr">
-              <Link onClick={handleClick} className="btn btn-primary btn-block btn-lg text-white text-decoration-none" href={Config.ConfigAppUrl+"Auth/EscortRegister7"} >
+              <Link onClick={handleClick} className="btn btn-primary btn-block btn-lg text-white text-decoration-none" href={Config.ConfigAppUrl+"Auth/EscortRegister12"} >
                 Continuar
               </Link>
             </div>

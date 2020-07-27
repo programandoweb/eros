@@ -14,37 +14,29 @@ const divBackground = {
   backgroundImage: 'url(' + background + ')',
 };
 
+let user    = store.get("user");
 let url_continue = false;
 
 function App() {
   const [gender, setGender]   =   useState(false)
-  const [inputs, setInputs]   =   useState({
-                                              nationality:"",
-                                              gender:"",
-                                            });
+  const [inputs, setInputs]   =   useState({});
 
   const context               =   React.useContext(StateContext);
 
   function handleClick(e){
-    console.log();
-    if (store.get("escort").nationality!==undefined && store.get("escort").nationality!=='' && inputs.gender!=='') {
+    e.preventDefault();
+    if (  (store.get("escort").AtiendoEnTarifaTransporte!==undefined && store.get("escort").AtiendoEnTarifaTransporte!=="" ) ||
+          (store.get("escort").AtiendoEndireccion!==undefined && store.get("escort").AtiendoEndireccion!=="" ) ||
+          (store.get("escort").AtiendoEnhotel!==undefined && store.get("escort").AtiendoEnhotel!=="" )
+        ){
 
-      /*PUSH DATA STORE*/
-      let Escort           =   store.get("escort");
-      Object.entries(inputs).map((v,k)=>{
-        if (Escort[v[0]]===undefined ) {
-          Escort[v[0]]   =   "";
-        }
-        Escort[v[0]]     =   v[1] ;
-      })
-      store.set("escort",Escort);
-      /*END PUSH DATA STORE*/
-
-
+      let _inputs       =   inputs
+          _inputs.data  =   JSON.stringify(store.get("escort"))
+          _inputs.token =   user.token
       url_continue    =   e.target.href;
       inputs.user_id  =   store.get("user").user_id;
-      Functions.PostAsync("User","setEscort",inputs,context,{name:"callbackContinue",funct:callbackContinue})
-      e.preventDefault();
+      Functions.PostAsync("User","setEscortDondeAtender",inputs,context,{name:"callbackContinue",funct:callbackContinue})
+
     }else {
       let modal = {
                 status:true,
@@ -99,14 +91,13 @@ function App() {
             </div>
           </div>
 
-          {(gender)?<div className="row justify-content-md-center mt-4">
-                      <div className="col-12 col-sm-4 text-center mb-4">
-                        <Link onClick={handleClick} className="btn btn-primary btn-block btn-lg text-white text-decoration-none" href={Config.ConfigAppUrl+"Auth/EscortRegister11"} >
-                          Continuar
-                        </Link>
-                      </div>
-                    </div>:''
-          }
+          <div className="row justify-content-md-center mt-4">
+            <div className="col-12 col-sm-4 text-center mb-4">
+              <Link onClick={handleClick} className="btn btn-primary btn-block btn-lg text-white text-decoration-none" href={Config.ConfigAppUrl+"Auth/EscortRegister11"} >
+                Continuar
+              </Link>
+            </div>
+          </div>
         </div>
       </form>
     </div>

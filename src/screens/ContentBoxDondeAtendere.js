@@ -3,25 +3,26 @@ import hotel from '../assets/images/resources/icono-hotel-motel-2.png';
 import domicilio from '../assets/images/resources/icono-a-domicilio.png';
 import miDomicilio from '../assets/images/resources/icon-bed.png';
 import store from "../helpers/store";
+import Selector from "../components/Selector";
 
 //se crean los items por
 const  inputsDefault  = {
-                          parking:{
+                          AtiendoEnParking:{
                             items:["Si","No"],
                             selection:"Si",
                           },
-
-
+                          AtiendoEnhotel:"",
+                          AtiendoEndireccion:"",
+                          AtiendoEnTarifaTransporte:"",
                         }
 
 
-let escort= store.get("escort");
+let escort  =  store.get("escort");
 
 function App(props) {
 
   const [estados, setEstados]   =   useState({hotel:false,adomicilio:false,midomicilio:false,})
-
-  const [inputs, setInputs] =   useState(inputsDefault);
+  const [inputs, setInputs]     =   useState(inputsDefault);
 
   const   items = [ {
                         label:"Hotel - Motel",
@@ -44,7 +45,19 @@ function App(props) {
 
 
   useEffect(()=>{
-    content()
+    content();
+    let _inputs  =  {}
+        _inputs  =  escort
+    Object.entries(inputs).map((v,k)=>{
+      if (v[0]!=='AtiendoEnParking' && (escort[v[0]]!==undefined && escort[v[0]]!=="")) {
+        _inputs[v[0]]   =   escort[v[0]]
+      }else {
+        _inputs[v[0]]   =   inputsDefault[v[0]]
+      }
+    })
+
+    setInputs(_inputs)
+    store.set("escort",_inputs)
   },[])
 
   function content(){
@@ -69,12 +82,11 @@ function App(props) {
   }
 
   function handleChange(e){
-    let _inputs = inputs
-        _inputs[e.target.name] =  e.target.value;
-    setInputs(_inputs)
-    //console.log(e.target.name,e.target.value);
-    store.set("escort",{...escort,[e.target.name]:e.target.value})
-
+    let _inputs = inputs;
+        _inputs[e.target.name]  =   e.target.value;
+        setInputs(_inputs);
+        escort[e.target.name]   =   e.target.value;
+        store.set("escort",escort);
   }
 
   function Adomicilio(){
@@ -95,8 +107,8 @@ function App(props) {
               </span>
             </div>
             <input  type="text"
-                    name="tarifa_transporte"
-                    defaultValue={inputs.tarifa_transporte}
+                    name="AtiendoEnTarifaTransporte"
+                    defaultValue={inputs.AtiendoEnTarifaTransporte}
                     onChange={handleChange}
                     className="form-control"
                     placeholder="Tarifa de transporte"/>
@@ -123,8 +135,8 @@ function App(props) {
             </span>
           </div>
           <input  type="text"
-                  name="direccion"
-                  defaultValue={inputs.direccion}
+                  name="AtiendoEndireccion"
+                  defaultValue={inputs.AtiendoEndireccion}
                   onChange={handleChange}
                   className="form-control"
                   placeholder="Dirección de mi domicilio"/>
@@ -142,6 +154,15 @@ function App(props) {
       </div>
       <div className="App-Question--x2 text-left mb-2">
         ¿Cuenta con parqueadero?
+      </div>
+
+      <div className="row justify-content-md-center mt-0">
+        <div className="col-12 col-sm-12 text-left">
+          <Selector
+              setImputs={setInputs}
+              inputs={inputs}
+              name="AtiendoEnParking" />
+        </div>
       </div>
     </div>
   }
@@ -164,8 +185,8 @@ function App(props) {
               </span>
             </div>
             <input  type="text"
-                    name="hotel"
-                    defaultValue={inputs.hotel}
+                    name="AtiendoEnhotel"
+                    defaultValue={inputs.AtiendoEnhotel}
                     onChange={handleChange}
                     className="form-control"
                     placeholder="Tarifa de transporte"/>
@@ -177,24 +198,22 @@ function App(props) {
           </div>
         </div>
       </div>
-
-
     </div>
   }
 
   return (<div className="row mt-2 content-box ">
             {
               items.map((v,k)=>{
-                            console.log(estados[v.name],"manuel");
-                            return  <>
-                                      <div key={k} className="col-12 text-center p-1">
-                                        <div className={(estados[v.name]===true)?'box-1x1 box-1x1-active rounded':'box-1x1 rounded'} onClick={()  =>{ handlerChangeState(v) }}>
-                                          <img  src={v.ico} />
-                                          <span>{v.label}</span>
-                                        </div>
-                                        {(estados[v.name])?v.form:''}
-                                      </div>
-                                    </>})
+                return    <>
+                            <div key={k} className="col-12 text-center p-1">
+                              <div className={(estados[v.name]===true)?'box-1x1 box-1x1-active rounded':'box-1x1 rounded'} onClick={()  =>{ handlerChangeState(v) }}>
+                                <img  src={v.ico} />
+                                <span>{v.label}</span>
+                              </div>
+                              {(estados[v.name])?v.form:''}
+                            </div>
+                          </>
+                        })
             }
           </div>
   )

@@ -88,7 +88,7 @@ function App() {
       Escort.birth_date   =   inputs.ano + '-' + inputs.mes + '-' + inputs.dia;
       store.set("escort",Escort);
       /*END PUSH DATA STORE*/
-      //return console.log(Escort);
+
       Functions.PostAsync("User","setEscort",Escort,context,{name:"callbackContinue",funct:callbackContinue})
     }else{
       let modal = {
@@ -138,9 +138,6 @@ function App() {
     })
 
     var today = new Date(escort.birth_date);
-
-    console.log(today.getMonth());
-
 
     set_input_anos(today.getFullYear())
     set_input_meses(today.getMonth() + 1  )

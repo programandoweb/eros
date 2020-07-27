@@ -108,12 +108,16 @@ function App() {
 
 
   useEffect(()=>{
+
     let __inputs    = inputs
+
     Object.entries(inputs).map((v,k)=>{
-      if(escort[v[0]]!==undefined) {
-        __inputs[v[0]]  =  base_url+escort[v[0]];
+      if(escort[v[0]]!==undefined && escort[v[0]]!==null && escort[v[0]]!=="null" && escort[v[0]]!=="") {
+        __inputs[v[0]]  =  base_url+escort[v[0]];        
       }
     })
+
+
     setInputs(__inputs)
 
   },[])

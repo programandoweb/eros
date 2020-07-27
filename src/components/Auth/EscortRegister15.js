@@ -17,7 +17,7 @@ const divBackground = {
 };
 
 let user    = store.get("user");
-let motel   = store.get("motel");
+let escort   = store.get("escort");
 
 let url_continue = false;
 
@@ -50,42 +50,44 @@ function App() {
   }
 
   function KeyUp(e) {
+    let _store        =   store.get("escort")
     let name          =   e.target.name;
     let _inputs       =   inputs;
         _inputs[name] =   e.target.value;
-        store.set("motel",_inputs)
+        _store[name]  =   e.target.value;
+        store.set("escort",_inputs)
         setImputs(_inputs)
   }
 
   function handleChange(e){
-    store.set("motel",{...motel,[e.target.name]:e.target.value})
+    store.set("escort",{...escort,[e.target.name]:e.target.value})
   }
 
   function handleClick(e){
     e.preventDefault();
 
     /*PUSH DATA STORE*/
-    let Motel           =   store.get("motel");
+    let Escort           =   store.get("escort");
     Object.entries(inputs).map((v,k)=>{
-      if (Motel[v[0]]===undefined ) {
-        Motel[v[0]]   =   "";
+      if (Escort[v[0]]===undefined ) {
+        Escort[v[0]]   =   "";
       }
-      Motel[v[0]]     =   v[1] ;
+      Escort[v[0]]     =   v[1] ;
     })
-    store.set("motel",Motel);
+    store.set("escort",Escort);
     /*END PUSH DATA STORE*/
 
-    url_continue=e.target.href;
-    let send  =   store.get("motel");
+    url_continue  =   e.target.href;
+    let send      =   store.get("escort");
         send.user_id=store.get("user").user_id
-    Functions.PostAsync("User","setMotel",send,context,{name:"callbackContinue",funct:callbackContinue})
+        Functions.PostAsync("User","setEscort",send,context,{name:"callbackContinue",funct:callbackContinue})
   }
 
   useEffect(()=>{
     let __inputs    = inputs
     Object.entries(inputs).map((v,k)=>{
-      if(motel[v[0]]!==undefined) {
-        __inputs[v[0]]  = motel[v[0]];
+      if(escort[v[0]]!==undefined) {
+        __inputs[v[0]]  = escort[v[0]];
       }
     })
     setImputs(__inputs)
@@ -103,6 +105,8 @@ function App() {
           <div className="row justify-content-center">
             <div className="col-12 col-sm-4 mt-3">
               <Accounts
+                setState={KeyUp}
+                store="escort"
                 icon={bancolombia}
                 label="Bancolombia"
                 name="number_account_bank"
@@ -114,6 +118,8 @@ function App() {
           <div className="row justify-content-center">
             <div className="col-12 col-sm-4 mt-3">
               <Accounts
+                setState={KeyUp}
+                store="escort"
                 icon={sured}
                 label="Sured"
                 name="number_identification"
@@ -125,6 +131,8 @@ function App() {
           <div className="row justify-content-center">
             <div className="col-12 col-sm-4 mt-3">
               <Accounts
+                setState={KeyUp}
+                store="escort"
                 icon={nequi}
                 label="Nequi"
                 name="number_nequi"
@@ -135,7 +143,7 @@ function App() {
           </div>
           <div className="row justify-content-md-center mt-3">
             <div className="col-12 col-sm-4 text-centerr">
-              <div onClick={handleClick} className="btn btn-primary btn-block btn-lg text-white text-decoration-none" href={Config.ConfigAppUrl+"Auth/HotelRegister5"} >
+              <div onClick={handleClick} className="btn btn-primary btn-block btn-lg text-white text-decoration-none" href={Config.ConfigAppUrl+"Auth/EscortRegister0"} >
                 Finalizar
               </div>
             </div>

@@ -88,13 +88,13 @@ function App() {
     let _inputs = inputs
         _inputs[e.target.name] =  e.target.value;
     setInputs(_inputs)
-    //console.log(e.target.name,e.target.value);
+    console.log(escort); return
     store.set("escort",{...escort,[e.target.name]:e.target.value})
   }
 
 
   useEffect(()=>{
-    if (escort.json_servicios!==undefined && escort.json_servicios!==null && escort.json_servicios!=="") {
+    if (escort.json_servicios!==undefined && escort.json_servicios!==null && escort.json_servicios!=="" && escort.json_servicios!=="null") {
       let json_servicios     =   JSON.parse(escort.json_servicios)
       let __inputs      =   inputs
       Object.entries(json_servicios.dias).map((v)=>{

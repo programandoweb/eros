@@ -90,9 +90,6 @@ function App() {
   }
 
   useEffect(()=>{
-
-    //console.log(escort);
-
     let __inputs    = inputs
     Object.entries(inputs).map((v,k)=>{
       if(escort[v[0]]!==undefined) {
